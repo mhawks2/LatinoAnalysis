@@ -30,7 +30,8 @@ class PostProcMaker():
      self._cmsswBasedir = os.environ["CMSSW_BASE"]
 
      #self._aaaXrootd = 'root://cms-xrd-global.cern.ch//'
-     self._aaaXrootd = 'root://xrootd-cms.infn.it/'
+     #self._aaaXrootd = 'root://xrootd-cms.infn.it/'
+     self._aaaXrootd = 'root://cmsxrootd.fnal.gov/'
 
      self._haddnano  = 'PhysicsTools/NanoAODTools/scripts/haddnano.py'
      if '/usr/lib64/python2.7/site-packages' not in sys.path:
@@ -326,7 +327,7 @@ class PostProcMaker():
        if not self._iniStep == 'Prod' : self._targetDir += self._iniStep+'__'+iStep+'/'
        else                           : self._targetDir += iStep+'/'
        
-       if self._Sites[self._LocalSite]['mkDir'] : os.system('mkdir -p '+ self._targetDir )
+#       if self._Sites[self._LocalSite]['mkDir'] : os.system('mkdir -p '+ self._targetDir )
 
      # UEPS
      else:
