@@ -17,8 +17,11 @@ Sites = {
               'lsCmd'       : 'ls' ,
               'mkDir'       : True ,
               'xrootdPath'  : 'root://eoscms.cern.ch/' ,
+              'xrootdPath'  : 'root://eosuser.cern.ch/', 
+              #'xrootdPath'  : 'root://cmsxrootd.fnal.gov/' ,
               #'treeBaseDir' : '/eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/' ,
-              'treeBaseDir' : '/eos/user/m/mihawksw/private/azh/samples/',
+              'treeBaseDir' : '/eos/user/m/mihawksw/azh/samples/',
+              #'treeBaseDir' : '/afs/cern.ch/user/m/mihawksw/private/azh/postprocessing/samples/',
               #'treeBaseDir' : '/eos/cms/store/group/phys_smp/ec/Latinos/HWWNano/',
               'batchQueues' : ['8nh','1nd','2nd','1nw'],
               'slc_ver'     : 7

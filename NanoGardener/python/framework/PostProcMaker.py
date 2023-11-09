@@ -327,7 +327,7 @@ class PostProcMaker():
        if not self._iniStep == 'Prod' : self._targetDir += self._iniStep+'__'+iStep+'/'
        else                           : self._targetDir += iStep+'/'
        
-#       if self._Sites[self._LocalSite]['mkDir'] : os.system('mkdir -p '+ self._targetDir )
+       #if self._Sites[self._LocalSite]['mkDir'] : os.system('mkdir -p '+ self._targetDir )
 
      # UEPS
      else:
