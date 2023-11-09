@@ -3719,6 +3719,15 @@ Steps = {
         
                 },
 
+  'btagPerEvent_WP': {
+                  'isChain'    : False ,
+                  'do4MC'      : True  ,
+                  'do4Data'    : False  ,
+                  'import'     : 'LatinoAnalysis.NanoGardener.modules.BTagEventWeightProducer_WP' ,
+                  'declare'    : '',
+                  'module'     : 'BTagEventWeightProducer_WP("RPLME_CMSSW")',
+                },
+
 
   'LeptonSF' : {
                   'isChain'    : False ,
