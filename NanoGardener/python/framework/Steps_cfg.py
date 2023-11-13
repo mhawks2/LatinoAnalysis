@@ -3728,6 +3728,14 @@ Steps = {
                   'module'     : 'BTagEventWeightProducer_WP("RPLME_CMSSW")',
                 },
 
+  'btagEff_WP': {
+                  'isChain'    : False ,
+                  'do4MC'      : True  ,
+                  'do4Data'    : False  ,
+                  'import'     : 'LatinoAnalysis.NanoGardener.modules.btagEffProducerLatinos' ,
+                  'declare'    : '',
+                  'module'     : 'btagEffProducerLatinos("RPLME_CMSSW")',
+                },
 
   'LeptonSF' : {
                   'isChain'    : False ,
