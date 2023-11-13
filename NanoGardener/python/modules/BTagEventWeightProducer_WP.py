@@ -72,15 +72,16 @@ class BTagEventWeight():
         p_not_tagged = numpy.ones(1, dtype=numpy.float32)
         
         for cj in CleanJets:
-            pt = cj.pt
-            flav = Jets[cj.jetIdx].hadronFlavour
-            disc = Jets[cj.jetIdx].btagDeepFlavB
+            if (cj.pt > 30.0 and abs(cj.eta) < 2.5):
+                pt = cj.pt
+                flav = Jets[cj.jetIdx].hadronFlavour
+                disc = Jets[cj.jetIdx].btagDeepFlavB
 
-            isTagged = True if (disc > self.WP) else False
-            if (isTagged): 
-                p_tagged     *=      self._getEff(pt, flav)
-            else:          
-                p_not_tagged *= (1 - self._getEff(pt, flav))
+                isTagged = True if (disc > self.WP) else False
+                if (isTagged):
+                    p_tagged     *=      self._getEff(pt, flav)
+                else:
+                    p_not_tagged *= (1 - self._getEff(pt, flav))
 
         btagweight = p_tagged * p_not_tagged
 
@@ -99,19 +100,20 @@ class BTagEventWeight():
         p_not_tagged = numpy.ones(1, dtype=numpy.float32)
         
         for cj in CleanJets:
-            pt   = cj.pt
-            flav = Jets[cj.jetIdx].hadronFlavour
-            disc = Jets[cj.jetIdx].btagDeepFlavB
-            sf   = Jets[cj.jetIdx].btagSF_deepjet_M
-           
-            isTagged = True if (disc > self.WP) else False
-            if (isTagged): 
-                p_tagged     *=      (sf * self._getEff(pt, flav))
-            else:          
-                p_not_tagged *= (1 - (sf * self._getEff(pt, flav)))
+            if (cj.pt > 30.0 and abs(cj.eta) < 2.5):
+                pt   = cj.pt
+                flav = Jets[cj.jetIdx].hadronFlavour
+                disc = Jets[cj.jetIdx].btagDeepFlavB
+                sf   = Jets[cj.jetIdx].btagSF_deepjet_M
+
+                isTagged = True if (disc > self.WP) else False
+                if (isTagged):
+                    p_tagged     *=      (sf * self._getEff(pt, flav))
+                else:
+                    p_not_tagged *= (1 - (sf * self._getEff(pt, flav)))
 
         btagweight = p_tagged * p_not_tagged
-        
+
         return btagweight
 
 
