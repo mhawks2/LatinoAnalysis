@@ -3708,6 +3708,14 @@ Steps = {
                   'module'     : 'btagSFProducer_DeepJet_UL()',
                  },
 
+  'btagPerJet_DeepJet_WP_UL': {
+                  'isChain'    : False ,
+                  'do4MC'      : True  ,
+                  'do4Data'    : False  ,
+                  'import'     : 'LatinoAnalysis.NanoGardener.modules.btagSFProducerLatinos' ,
+                  'declare'    : 'btagSFProducer_DeepJet_UL = lambda : btagSFProducerLatinos(era="RPLME_CMSSW_WP", algo="deepjet", selectedWPs=["M","T"])',
+                  'module'     : 'btagSFProducer_DeepJet_UL()',
+                },
 
   'btagPerEvent': {
                   'isChain'    : False ,
@@ -3736,6 +3744,15 @@ Steps = {
                   'declare'    : '',
                   'module'     : 'btagEffProducerLatinos("RPLME_CMSSW")',
                 },
+
+  'btagPerJet_DeepJet_UL_WP' :  {
+                  'isChain'    : True  ,
+                  'do4MC'      : True  ,
+                  'do4Data'    : False ,
+                  'subTargets' : ['btagPerJet_DeepJet_WP_UL','btagEff_WP'],
+  },
+
+
 
   'LeptonSF' : {
                   'isChain'    : False ,

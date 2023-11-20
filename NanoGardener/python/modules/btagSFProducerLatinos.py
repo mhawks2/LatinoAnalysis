@@ -11,20 +11,59 @@ def is_relevant_syst_for_shape_corr(flavor_btv, syst, jesSystsForShape=["jes"]):
     """Returns true if a flavor/syst combination is relevant"""
     jesSysts = list(chain(*[ ("up_" + j, "down_" + j) for j in jesSystsForShape ]))
 
-    if flavor_btv == 0:
+    if flavor_btv == 0:  #bjets
         return syst in [ "central",
                          "up_lf", "down_lf",
                          "up_hfstats1", "down_hfstats1",
                          "up_hfstats2", "down_hfstats2" ] + jesSysts
-    elif flavor_btv == 1:
+    elif flavor_btv == 1:  #cjets
         return syst in [ "central",
                          "up_cferr1", "down_cferr1",
                          "up_cferr2", "down_cferr2" ]
-    elif flavor_btv == 2:
+    elif flavor_btv == 2:  #light
         return syst in [ "central",
                          "up_hf", "down_hf",
                          "up_lfstats1", "down_lfstats1",
                          "up_lfstats2", "down_lfstats2" ] + jesSysts
+    else:
+        raise ValueError("ERROR: Undefined flavor = %i!!" % flavor_btv)
+    return True
+
+
+def is_relevant_syst_for_WP(flavor_btv, syst):
+    """Returns true if a flavor/syst combination is relevant"""
+    if flavor_btv == 0:  #bjets
+        return syst in ["central", 
+                         "up_isr", "down_isr",
+                         "up_fsr", "down_fsr",
+                         "up_hdamp", "down_hdamp",
+                         "up_jes", "down_jes",
+                         "up_jer", "down_jer",
+                         "up_pileup", "down_pileup",
+                         "up_qcdscale", "down_qcdscale",
+                         "up_statistic", "down_statistic",
+                         "up_topmass", "down_topmass",
+                         "up_type3", "down_type3" ]
+
+    elif flavor_btv == 1:  #cjets
+        return syst in ["central", 
+                         "up_isr", "down_isr",
+                         "up_fsr", "down_fsr",
+                         "up_hdamp", "down_hdamp",
+                         "up_jes", "down_jes",
+                         "up_jer", "down_jer",
+                         "up_pileup", "down_pileup",
+                         "up_qcdscale", "down_qcdscale",
+                         "up_statistic", "down_statistic",
+                         "up_topmass", "down_topmass",
+                         "up_type3", "down_type3" ]
+
+    elif flavor_btv == 2:  #light
+        return syst in ["central",
+                         "up_correlated", "down_correlated",
+                         "up_uncorrelated", "down_correlated" ]
+
+
     else:
         raise ValueError("ERROR: Undefined flavor = %i!!" % flavor_btv)
     return True
@@ -56,7 +95,7 @@ class btagSFProducerLatinos(Module):
                     'measurement_types' : {
                         0 : "comb",  # b
                         1 : "comb",  # c
-                        2 : "comb"   # light
+                        2 : "incl"   # light
                     },
                     'supported_wp' : [ "L", "M", "T"]
                 },
@@ -65,7 +104,7 @@ class btagSFProducerLatinos(Module):
                     'measurement_types' : {
                         0 : "comb",  # b
                         1 : "comb",  # c
-                        2 : "comb"   # light
+                        2 : "incl"   # light
                     },
                     'supported_wp' : [ "L", "M", "T"]
                 },
@@ -92,7 +131,7 @@ class btagSFProducerLatinos(Module):
                     'measurement_types' : {
                         0 : "comb",  # b
                         1 : "comb",  # c
-                        2 : "comb"   # light
+                        2 : "incl"   # light
                     },
                     'supported_wp' : [ "L", "M", "T"]
                 },
@@ -110,7 +149,7 @@ class btagSFProducerLatinos(Module):
                     'measurement_types' : {
                         0 : "comb",  # b
                         1 : "comb",  # c
-                        2 : "comb"   # light
+                        2 : "incl"   # light
                     },
                     'supported_wp' : [ "L", "M", "T"]
                 },
@@ -130,7 +169,7 @@ class btagSFProducerLatinos(Module):
                     'measurement_types' : {
                         0 : "comb",  # b
                         1 : "comb",  # c
-                        2 : "comb"   # light
+                        2 : "incl"   # light
                     },
                     'supported_wp' : [ "L", "M", "T"]
                 },
@@ -139,7 +178,7 @@ class btagSFProducerLatinos(Module):
                     'measurement_types' : {
                         0 : "comb",  # b
                         1 : "comb",  # c
-                        2 : "comb"   # light
+                        2 : "incl"   # light
                     },
                     'supported_wp' : [ "L", "M", "T"]
                 },
@@ -166,7 +205,7 @@ class btagSFProducerLatinos(Module):
                     'measurement_types' : {
                         0 : "comb",  # b
                         1 : "comb",  # c
-                        2 : "comb"   # light
+                        2 : "incl"   # light
                     },
                     'supported_wp' : [ "L", "M", "T"]
                 },
@@ -184,7 +223,7 @@ class btagSFProducerLatinos(Module):
                     'measurement_types' : {
                         0 : "comb",  # b
                         1 : "comb",  # c
-                        2 : "comb"   # light
+                        2 : "incl"   # light
                     },
                     'supported_wp' : [ "L", "M", "T"]
                 },
@@ -193,7 +232,7 @@ class btagSFProducerLatinos(Module):
                     'measurement_types' : {
                         0 : "iterativefit",  # b
                         1 : "iterativefit",  # c
-                        2 : "iterativefit"   # light
+                        2 : "iterativefit"   # lighe
                     },
                     'supported_wp' : [ "shape_corr"]
                 },
@@ -226,10 +265,17 @@ class btagSFProducerLatinos(Module):
 
         # define systematic uncertainties
         self.systs = []
-        self.systs.append("up")
-        self.systs.append("down")
-        self.central_and_systs = [ "central" ]
-        self.central_and_systs.extend(self.systs)
+        for syst in [ 'isr', 'fsr',
+                      'hdamp', 'jes',
+                      'jer', 'pileup',
+                      'qcdscale', 'statistic',
+		      'topmass', 'type3']:
+            self.systs.append("up_%s" % syst)
+	    self.systs.append("down_%s" % syst)
+	self.central_and_systs = [ "central" ]
+	self.central_and_systs.extend(self.systs)
+        self.central_and_systs.extend(['up_uncorrelated','up_correlated','down_uncorrelated','down_correlated'])
+	
 
         self.systs_shape_corr = []
         for syst in [ 'lf', 'hf',
@@ -274,12 +320,24 @@ class btagSFProducerLatinos(Module):
             for syst in systs:
                 v_systs.push_back(syst)
             reader = ROOT.BTagCalibrationReader(wp_btv, 'central', v_systs)
+            v_systs2 = getattr(ROOT, 'vector<string>')()
+            for syst in ['up_correlated','up_uncorrelated','down_correlated','down_uncorrelated']:
+                v_systs2.push_back(syst)
+            reader2 = ROOT.BTagCalibrationReader(wp_btv, 'central', v_systs2)
+            loaded2 = False
             for flavor_btv in [ 0, 1, 2 ]:
                 if wp == "shape_corr":
                     reader.load(self.calibration, flavor_btv, 'iterativefit')
+                elif self.measurement_types[flavor_btv] == 'incl':
+                    reader2.load(self.calibration, flavor_btv, self.measurement_types[flavor_btv])
+                    loaded2 = True
                 else:
                     reader.load(self.calibration, flavor_btv, self.measurement_types[flavor_btv])
-            self.readers[wp_btv] = reader
+                    
+            if loaded2:
+                self.readers[wp_btv] = [reader, reader2]
+            else:
+                self.readers[wp_btv] = reader
 
     def endJob(self):
         pass
@@ -331,6 +389,9 @@ class btagSFProducerLatinos(Module):
             for i in range(len(jet_data)):
                 yield 1
             raise StopIteration
+        if isinstance(reader,list):
+            reader2 = reader[1]
+            reader  = reader[0]
         for idx, (pt, eta, flavor_btv, discr) in enumerate(jet_data):
             epsilon = 1.e-3
             max_abs_eta = self.max_abs_eta
@@ -345,8 +406,16 @@ class btagSFProducerLatinos(Module):
                     sf = reader.eval_auto_bounds(syst, flavor_btv, eta, pt, discr)
                 else:
                     sf = reader.eval_auto_bounds('central', flavor_btv, eta, pt, discr)
+            elif self.measurement_types[flavor_btv] == 'incl':
+		if is_relevant_syst_for_WP(flavor_btv, syst):
+                    sf = reader2.eval_auto_bounds(syst, flavor_btv, eta, pt)
+		else:
+		    sf = reader2.eval_auto_bounds('central', flavor_btv, eta, pt)                
             else:
-                sf = reader.eval_auto_bounds(syst, flavor_btv, eta, pt)
+		if is_relevant_syst_for_WP(flavor_btv, syst):
+                    sf = reader.eval_auto_bounds(syst, flavor_btv, eta, pt)
+		else:
+		    sf = reader.eval_auto_bounds('central', flavor_btv, eta, pt)
             # check if SF is OK
             if sf < 0.01:
                 if self.verbose > 0:
