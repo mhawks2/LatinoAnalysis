@@ -3715,7 +3715,26 @@ Steps = {
                   'import'     : 'LatinoAnalysis.NanoGardener.modules.btagSFProducerLatinos' ,
                   'declare'    : 'btagSFProducer_DeepJet_UL = lambda : btagSFProducerLatinos(era="RPLME_CMSSW_WP", algo="deepjet", selectedWPs=["M","T"])',
                   'module'     : 'btagSFProducer_DeepJet_UL()',
-                },
+                 },
+
+  'btagEff_WP': {
+                  'isChain'    : False ,
+                  'do4MC'      : True  ,
+                  'do4Data'    : False  ,
+                  'import'     : 'LatinoAnalysis.NanoGardener.modules.btagEffProducerLatinos' ,
+                  'declare'    : '',
+                  'module'     : 'btagEffProducerLatinos("RPLME_CMSSW")',
+                 },
+
+  'btagPerJet_DeepJet_UL_WP_temp' :  {
+                  'isChain'    : True  ,
+                  'do4MC'      : True  ,
+                  'do4Data'    : False ,
+                  'subTargets' : ['btagPerJet_DeepJet_WP_UL','btagEff_WP'],
+  },
+
+
+
 
   'btagPerEvent': {
                   'isChain'    : False ,
@@ -3726,32 +3745,6 @@ Steps = {
                   'module'     : 'BTagEventWeightProducer()',
         
                 },
-
-  'btagPerEvent_WP': {
-                  'isChain'    : False ,
-                  'do4MC'      : True  ,
-                  'do4Data'    : False  ,
-                  'import'     : 'LatinoAnalysis.NanoGardener.modules.BTagEventWeightProducer_WP' ,
-                  'declare'    : '',
-                  'module'     : 'BTagEventWeightProducer_WP("RPLME_CMSSW")',
-                },
-
-  'btagEff_WP': {
-                  'isChain'    : False ,
-                  'do4MC'      : True  ,
-                  'do4Data'    : False  ,
-                  'import'     : 'LatinoAnalysis.NanoGardener.modules.btagEffProducerLatinos' ,
-                  'declare'    : '',
-                  'module'     : 'btagEffProducerLatinos("RPLME_CMSSW")',
-                },
-
-  'btagPerJet_DeepJet_UL_WP' :  {
-                  'isChain'    : True  ,
-                  'do4MC'      : True  ,
-                  'do4Data'    : False ,
-                  'subTargets' : ['btagPerJet_DeepJet_WP_UL','btagEff_WP'],
-  },
-
 
 
   'LeptonSF' : {

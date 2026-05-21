@@ -163,7 +163,14 @@ class batchJobs :
               jFileSing.write('cd $TMPDIR \n')
          elif 'cern' in hostName:
            if not CERN_USE_LSF:
+             jFile.write('mkdir -p /eos/user/m/mihawksw/azh/postprocessing/workspace'+subDirExtra+' \n')
+             #jFile.write('cd /eos/user/m/mihawksw/azh/postprocessing/workspace'+subDirExtra+' \n')
+             #jFile.write('cd /eos/user/m/mihawksw/azh/postprocessing/workspace/ \n')
+             #jFile.write('cd $TMPDIR \n')
+             #jFile.write('set -e \n')
+           
              jFile.write('cd $TMPDIR \n')
+             #jFile.write('cd /tmp/mihawksw/ \n')
            else:
              jFile.write("mkdir /tmp/$USER/$LSB_JOBID \n")
              jFile.write("cd /tmp/$USER/$LSB_JOBID \n")
@@ -200,14 +207,14 @@ class batchJobs :
 
      # Create Proxy at IIHE
      if 'cern'  in hostName:
-       cmd='voms-proxy-info'
+       cmd='voms-proxy-info -file /afs/cern.ch/user/'+os.environ["USER"][:1]+'/'+os.environ["USER"]+'/.proxy'
        proc=subprocess.Popen(cmd, stderr = subprocess.PIPE,stdout = subprocess.PIPE, shell = True)
        out, err = proc.communicate()
        proxypath = " xxx "
        for line in out.split('\n'):
         if "path" in line:
           proxypath=line.split(':')[1]
-       os.system('cp '+proxypath+' /afs/cern.ch/user/'+os.environ["USER"][:1]+'/'+os.environ["USER"]+'/.proxy\n')
+       #os.system('cp '+proxypath+' /afs/cern.ch/user/'+os.environ["USER"][:1]+'/'+os.environ["USER"]+'/.proxy\n')
      if 'iihe'  in hostName:
        #os.system('voms-proxy-init --voms cms:/cms/becms --valid 168:0')
        os.system('cp $X509_USER_PROXY /user/'+os.environ["USER"]+'/.proxy')
@@ -355,6 +362,8 @@ class batchJobs :
              jdsFile.write('periodic_release =  (NumJobStarts < 3) && ((CurrentTime - EnteredCurrentStatus) > (60*3))\n')
            jdsFile.write('request_cpus = '+str(self.nThreads)+'\n')
            jdsFile.write('+JobFlavour = "'+queue+'"\n')
+           #jdsFile.write('requirements = (OpSysAndVer =?= "CentOS7")\n')
+           jdsFile.write('MY.SingularityImage = "/cvmfs/unpacked.cern.ch/gitlab-registry.cern.ch/cms-cat/cmssw-lxplus/cmssw-el7-lxplus:latest/"\n')
            jdsFile.write('queue\n')
            jdsFile.close()
            # We write the JDS file for documentation / resubmission, but initial submission will be done in one go below
@@ -475,6 +484,8 @@ class batchJobs :
          jds += '+AccountingGroup = '+CONDOR_ACCOUNTING_GROUP+'\n'
          jds += 'accounting_group = '+CONDOR_ACCOUNTING_GROUP+'\n'
        jds += '+JobFlavour = "'+queue+'"\n'
+       #jds += 'requirements = (OpSysAndVer =?= "CentOS7")\n'
+       jds += 'MY.SingularityImage = "/cvmfs/unpacked.cern.ch/gitlab-registry.cern.ch/cms-cat/cmssw-lxplus/cmssw-el7-lxplus:latest/"\n'
        jds += 'queue JName in (\n'
        for jName in self.jobsList:
          if JOB_DIR_SPLIT and self.JOB_DIR_SPLIT_READY :

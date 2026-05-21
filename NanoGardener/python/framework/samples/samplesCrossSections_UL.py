@@ -235,6 +235,12 @@ samples['tZq_ll_4f_TuneCP5Up']                  .extend( ['xsec=0.0761',        
 samples['tZq_ll_4f_TuneCP5Down']                .extend( ['xsec=0.0761',        'kfact=1.000',          'ref=W'] )
 
 
+############# TWZ   AN2024_226_v13  TOP-24-009
+samples['TWZToLL_thad_Wlep-DR1']        .extend( ['xsec=0.0030',    'kfact=1.000',      'ref=W'] )
+samples['TWZToLL_tlep_Whad-DR1']        .extend( ['xsec=0.0030',    'kfact=1.000',      'ref=W'] )
+samples['TWZToLL_tlep_Wlep-DR1']        .extend( ['xsec=0.0015',    'kfact=1.000',      'ref=W'] )
+
+
 ## VVV
 samples['WWW']			        	.extend( ['xsec=0.2158',	'kfact=1.000',		'ref=W'] )
 samples['WWW_ext1']			        .extend( ['xsec=0.2158',	'kfact=1.000',		'ref=W'] )
@@ -681,6 +687,40 @@ samples['AToZHToLLTTbar_MA-950_MH-700']         .extend( ['xsec=1', 'kfact=1.000
 samples['AToZHToLLTTbar_MA-950_MH-750']         .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
 samples['AToZHToLLTTbar_MA-950_MH-800']         .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
 samples['AToZHToLLTTbar_MA-950_MH-850']         .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+
+samples['AZH_1300_600_tb2']                     .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] ) 
+samples['AZH_1300_400_tb2']                     .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_1200_400_tb2']                     .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_1200_330_tb2']                     .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_1100_700_tb2']                     .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_1100_500_tb2']                     .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_1000_600_tb2']                     .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_1000_400_tb2']                     .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_900_700_tb2']                      .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] ) 
+samples['AZH_850_500_tb2']                      .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_800_400_tb2']                      .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_750_600_tb2']                      .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_750_330_tb2']                      .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_600_500_tb2']                      .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_450_330_tb2']                      .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+                                                .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_1300_600_tb1']                     .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_1300_400_tb1']                     .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_1200_400_tb1']                     .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_1200_330_tb1']                     .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_1100_700_tb1']                     .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_1100_500_tb1']                     .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_1000_600_tb1']                     .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_1000_400_tb1']                     .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_900_700_tb1']                      .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_900_500_tb1']                      .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_850_500_tb1']                      .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_800_400_tb1']                      .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_750_600_tb1']                      .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_750_330_tb1']                      .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_650_450_tb1']                      .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+samples['AZH_450_330_tb1']                      .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
+                                                .extend( ['xsec=1', 'kfact=1.000', 'ref=X'] )
 
 # WW aTGCs
 samples['WWToLNuLNu_MWW-0To500']         .extend( ['xsec=4.1880002',             'kfact=1.000',  'ref=X'] )

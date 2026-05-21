@@ -20,11 +20,11 @@ class rochester_corr(Module):
     def __init__(self,isdata = False , year=2016 , cmssw='Full2016v9HIPM' , lepColl="Lepton",metColls=['MET','PuppiMET','RawMET','TkMET','ChsMET']):
         cmssw_base = os.getenv('CMSSW_BASE')
         self.isdata = isdata
-        print "Loading macros from "+cmssw_base+"/src/LatinoAnalysis/NanoGardener/python/modules/RoccoR.cc"
+        print "Loading macros from "+cmssw_base+"/src/LatinoAnalysis/NanoGardener/python/modules/RoccoR_NG.cc"
         try:
-            ROOT.gROOT.LoadMacro(cmssw_base+'/src/LatinoAnalysis/NanoGardener/python/modules/RoccoR.cc+g')                                                                    
+            ROOT.gROOT.LoadMacro(cmssw_base+'/src/LatinoAnalysis/NanoGardener/python/modules/RoccoR_NG.cc+g')                                                                    
         except RuntimeError: 
-            ROOT.gROOT.LoadMacro(cmssw_base+'/src/LatinoAnalysis/NanoGardener/python/modules/RoccoR.cc++g')      
+            ROOT.gROOT.LoadMacro(cmssw_base+'/src/LatinoAnalysis/NanoGardener/python/modules/RoccoR_NG.cc++g')      
         print "Loaded"  
      
         if year == 2016 and cmssw == 'Full2016v9HIPM' : rochester_path=cmssw_base+"/src/LatinoAnalysis/NanoGardener/python/data/RoccoR2016aUL.txt"
@@ -32,7 +32,7 @@ class rochester_corr(Module):
         if year == 2017 and cmssw == 'Full2017v9': rochester_path=cmssw_base+"/src/LatinoAnalysis/NanoGardener/python/data/RoccoR2017UL.txt"        
         if year == 2018 and cmssw == 'Full2018v9': rochester_path=cmssw_base+"/src/LatinoAnalysis/NanoGardener/python/data/RoccoR2018UL.txt"        
         print "scale factors from", rochester_path
-        rc=ROOT.RoccoR(rochester_path)
+        rc=ROOT.RoccoR_NG(rochester_path)
         self.rc= rc        
 
         self.lepColl  = lepColl

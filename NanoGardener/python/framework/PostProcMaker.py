@@ -29,9 +29,11 @@ class PostProcMaker():
 
      self._cmsswBasedir = os.environ["CMSSW_BASE"]
 
-     #self._aaaXrootd = 'root://cms-xrd-global.cern.ch//'
+     self._aaaXrootd = ''#root://cms-xrd-global.cern.ch/'
      #self._aaaXrootd = 'root://xrootd-cms.infn.it/'
-     self._aaaXrootd = 'root://cmsxrootd.fnal.gov/'
+     #self._aaaXrootd = 'root://cmsxrootd.fnal.gov/'
+     #self._aaaXrootd = 'root://eoscms.cern.ch/'
+     #self._aaaXrootd = 'root://eosuser.cern.ch/'
 
      self._haddnano  = 'PhysicsTools/NanoAODTools/scripts/haddnano.py'
      if '/usr/lib64/python2.7/site-packages' not in sys.path:
@@ -293,13 +295,19 @@ class PostProcMaker():
      if 'X509_CERT_DIR' not in os.environ and os.path.isdir('/etc/grid-security/certificates'):
        os.environ['X509_CERT_DIR'] = '/etc/grid-security/certificates'
      
+     print 'basew3a'
      FileList = []
      for path in paths:
        if useGfal2Py:
+         print 'basew3b'
          dircont = self.ctx.listdir(srmprefix + path)
          files = [f for f in dircont if f.endswith('.root')]
+         print 'basew3c'
        else:
-         command = '(eval `scram unsetenv -sh`; gfal-ls '+srmprefix+path+ " | grep root)"
+         print 'basew3d'
+         command = '(eval `scram unsetenv -sh`; ls '+path+ " | grep root)"
+         #command = '(eval `scram unsetenv -sh`; gfal-ls '+srmprefix+path+ " | grep root)"
+         print 'basewe'
          proc=subprocess.Popen(command, stderr = subprocess.PIPE,stdout = subprocess.PIPE, shell = True)
          out, err = proc.communicate()
          if not proc.returncode == 0 :
@@ -327,7 +335,7 @@ class PostProcMaker():
        if not self._iniStep == 'Prod' : self._targetDir += self._iniStep+'__'+iStep+'/'
        else                           : self._targetDir += iStep+'/'
        
-       #if self._Sites[self._LocalSite]['mkDir'] : os.system('mkdir -p '+ self._targetDir )
+       if self._Sites[self._LocalSite]['mkDir'] : os.system('mkdir -p '+ self._targetDir )
 
      # UEPS
      else:
@@ -340,7 +348,7 @@ class PostProcMaker():
    def submitJobs(self,iProd,iStep):
 
      bpostFix=''
-     if not self._iniStep == 'Prod' : bpostFix='____'+self._iniStep
+     #if not self._iniStep == 'Prod' : bpostFix='____'+self._iniStep
 
      # Make job directories
      if JOB_DIR_SPLIT :
@@ -358,6 +366,7 @@ class PostProcMaker():
      for iSample in self._targetDic :
        for iFile in self._targetDic[iSample] :
          iTarget = os.path.basename(self._targetDic[iSample][iFile]).replace(self._treeFilePrefix,'').replace('.root','')
+
          if JOB_DIR_SPLIT :
            pidFile=jDir+'/'+iSample+'/NanoGardening__'+iProd+'__'+iStep+'__'+iTarget+bpostFix+'.jid'
          else:
@@ -376,7 +385,6 @@ class PostProcMaker():
 
      # Check pre bash command for Steps
      preBash = self.checkPreBashStep(iStep)
-
      if self._jobMode == 'Interactive' :
        print "INFO: Using Interactive command"
      # batchMode Preparation
@@ -396,23 +404,28 @@ class PostProcMaker():
        self._crab.setStorage('T2_CH_CERN','/store/group/phys_higgs/cmshww/amassiro/HWWNanoCrab/')
        self._crab.AddInputFile(self._cmsswBasedir+'/src/'+self._haddnano)
        #self._crab._ScriptHeader = self._cmsswBasedir+'/src/LatinoAnalysis/NanoGardener/test/PostProc_CrabScript_Header.sh'
-
      for iSample in self._targetDic :
        for iFile in self._targetDic[iSample] :
          iTarget = os.path.basename(self._targetDic[iSample][iFile]).replace(self._treeFilePrefix,'').replace('.root','')
          if iTarget in targetList :
+           print "a"
            # Create python
            if JOB_DIR_SPLIT :
              pyFile=jDir+'/'+iSample+'/NanoGardening__'+iProd+'__'+iStep+'__'+iTarget+bpostFix+'.py'
            else:
              pyFile=jDir+'/NanoGardening__'+iProd+'__'+iStep+'__'+iTarget+bpostFix+'.py'
+           print pyFile
            if os.path.isfile(pyFile) : os.system('rm '+pyFile)
-           outFile=self._treeFilePrefix+iTarget+'__'+iStep+'.root'
+           outFile=self._treeFilePrefix+iTarget+'__'+iProd+'__'+iStep+'.root'
            jsonFilter = self._Productions[iProd]['jsonFile'] if 'jsonFile' in self._Productions[iProd].keys() else None
+           print "b"
            self.mkPyCfg(iProd,iSample,[self.getStageIn(iFile)],iStep,pyFile,outFile,self._Productions[iProd]['isData'], jsonFilter)
            # Stage Out command + cleaning
+           print "c"
            stageOutCmd  = self.mkStageOut(outFile,self._targetDic[iSample][iFile])
-           rmGarbageCmd = 'rm '+outFile+' ; rm '+ os.path.basename(iFile).replace('.root','_Skim.root')
+###########rmGarbageCmd = 'rm '+outFile+' ; rm '+ os.path.basename(iFile).replace('.root','_Skim.root')
+           #rmGarbageCmd = 'rm '+outFile+' ; rm '+ os.path.basename(iFile).replace('.root','_Skim.root')
+           rmGarbageCmd = 'rm '+outFile+' ; rm '+ os.path.basename(iFile).replace('.root', '_input____'+iProd+'__'+iStep+'.root')
            # Interactive
            if   self._jobMode == 'Interactive' :
              command = 'cd '+wDir+' ; cp '+self._cmsswBasedir+'/src/'+self._haddnano+' . ; '+preBash+' python '+pyFile \
@@ -421,6 +434,7 @@ class PostProcMaker():
              else                 : print command
            # Batch
            elif self._jobMode == 'Batch' :
+             print "d"
              if use_singularity :
                self._jobs.AddSing(iStep,iTarget,stageOutCmd)
                self._jobs.AddSing(iStep,iTarget,rmGarbageCmd)
@@ -469,12 +483,24 @@ class PostProcMaker():
           command += 'gfal-copy '+prodFile+' '+self._Sites[self._LocalSite]['srmPrefix']+storeFile
         else:
           command += 'gfal-copy '+self._Sites[self._LocalSite]['srmPrefix']+prodFile+' '+self._Sites[self._LocalSite]['srmPrefix']+storeFile
-      # CERN
+#      # CERN
+#      elif self._LocalSite == 'cern' :
+#        if not cpMode:
+#          command = 'xrdcp -f '+prodFile+' '+self._Sites[self._LocalSite]['xrootdPath']+storeFile
+#        else:
+#          command = 'xrdcp -f '+self._Sites[self._LocalSite]['xrootdPath']+prodFile+' '+self._Sites[self._LocalSite]['xrootdPath']+storeFile
+
+#########################
+      # michelle
       elif self._LocalSite == 'cern' :
         if not cpMode:
-          command = 'xrdcp -f '+prodFile+' '+self._Sites[self._LocalSite]['xrootdPath']+storeFile
+          command = 'cp '+prodFile+' '+storeFile
+          #command = 'mv '+prodFile+' '+storeFile
         else:
-          command = 'xrdcp -f '+self._Sites[self._LocalSite]['xrootdPath']+prodFile+' '+self._Sites[self._LocalSite]['xrootdPath']+storeFile
+          command = 'cp '+prodFile+' '+storeFile
+          #command = 'mv '+prodFile+' '+storeFile
+#########################
+
       # IFCA
       elif self._LocalSite == 'ifca' :
          if self._TargetSite == 'ifca' or self._TargetSite == None :
@@ -565,35 +591,36 @@ class PostProcMaker():
      # Download the file locally with size validation (make maximum 5 attempts)
      fPy.write('for source in sourceFiles:\n')
      fPy.write('    fname = os.path.basename(source).replace(".root", "_input.root")\n')
-     fPy.write('    for att in range(5):\n')
-     fPy.write('        if source.startswith("root://"):\n')
-     fPy.write('            proc = subprocess.Popen(["xrdcp", "-f", source, "./" + fname])\n')
-     fPy.write('            proc.communicate()\n')
-     fPy.write('            if proc.returncode == 0:\n')
-     fPy.write('                out, err = subprocess.Popen(["xrdfs", source[:source.find("/", 7)], "stat", source[source.find("/", 7) + 1:]], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()\n')
-     fPy.write('                try:\n')
-     fPy.write('                    size = int(out.split("\\n")[2].split()[1])\n')
-     fPy.write('                except:\n')
-     fPy.write('                    if hasattr(userConfig, "postProcSkipSizeValidation") and userConfig.postProcSkipSizeValidation:\n')
-     fPy.write('                        sys.stderr.write("Failed to obtain original file size but skipping validation as requested by user\\n")\n')
-     fPy.write('                        break\n')
-     fPy.write('                    raise\n')
-     fPy.write('            else:\n')
-     fPy.write('                continue\n')
-     fPy.write('        else:\n')
-     fPy.write('            shutil.copyfile(source, "./" + fname)\n')
-     fPy.write('            size = os.stat(source).st_size\n')
-     fPy.write('\n')
-     fPy.write('        try:\n')
-     fPy.write('            if os.stat(os.path.basename(fname)).st_size == size:\n')
-     fPy.write('                break\n')
-     fPy.write('        except:\n')
-     fPy.write('            try:\n')
-     fPy.write('                os.unlink(os.path.basename(fname))\n')
-     fPy.write('            except:\n')
-     fPy.write('                pass\n')
-     fPy.write('    else:\n')
-     fPy.write('        raise RuntimeError("Failed to download " + source)\n\n')
+     fPy.write('    out, err = subprocess.Popen(["cp", source, "./"+fname], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()\n')
+#####fPy.write('    for att in range(5):\n')
+#####fPy.write('        if source.startswith("root://"):\n')
+#####fPy.write('            proc = subprocess.Popen(["xrdcp", "-f", source, "./" + fname])\n')
+#####fPy.write('            proc.communicate()\n')
+#####fPy.write('            if proc.returncode == 0:\n')
+#####fPy.write('                out, err = subprocess.Popen(["xrdfs", source[:source.find("/", 7)], "stat", source[source.find("/", 7) + 1:]], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()\n')
+#####fPy.write('                try:\n')
+#####fPy.write('                    size = int(out.split("\\n")[2].split()[1])\n')
+#####fPy.write('                except:\n')
+#####fPy.write('                    if hasattr(userConfig, "postProcSkipSizeValidation") and userConfig.postProcSkipSizeValidation:\n')
+#####fPy.write('                        sys.stderr.write("Failed to obtain original file size but skipping validation as requested by user\\n")\n')
+#####fPy.write('                        break\n')
+#####fPy.write('                    raise\n')
+#####fPy.write('            else:\n')
+#####fPy.write('                continue\n')
+#####fPy.write('        else:\n')
+#####fPy.write('            shutil.copyfile(source, "./" + fname)\n')
+#####fPy.write('            size = os.stat(source).st_size\n')
+#####fPy.write('\n')
+#####fPy.write('        try:\n')
+#####fPy.write('            if os.stat(os.path.basename(fname)).st_size == size:\n')
+#####fPy.write('                break\n')
+#####fPy.write('        except:\n')
+#####fPy.write('            try:\n')
+#####fPy.write('                os.unlink(os.path.basename(fname))\n')
+#####fPy.write('            except:\n')
+#####fPy.write('                pass\n')
+#####fPy.write('    else:\n')
+#####fPy.write('        raise RuntimeError("Failed to download " + source)\n\n')
      fPy.write('    files.append(fname)\n\n')
 
      # Configure modules
@@ -611,8 +638,11 @@ class PostProcMaker():
 
          fPy.write('                          '+self.customizeModule(iSample, s)+',\n')
 
+#####
      fPy.write('p = PostProcessor(  "."   ,          \n')
+#####fPy.write('p = PostProcessor(  "/eos/user/m/mihawksw/azh/postprocessing/workspace/TWZToLL_thad_Wlep-DR1/"   ,          \n')
      fPy.write('                    files ,          \n')
+     fPy.write('                    postfix="____'+iProd+'__'+iStep+'",       \n')
      if jsonFile != None:
        fPy.write('                    jsonInput='+jsonFile+' ,       \n')
      if 'selection' in self._Steps[iStep] :
@@ -646,12 +676,12 @@ class PostProcMaker():
      fPy.write('p.run() \n')
      fPy.write(' \n')
 
-     fPy.write('for fname in files:\n')
-     fPy.write('    try:\n')
-     fPy.write('        os.unlink(fname)\n')
-     fPy.write('        os.rename(fname.replace("_input.root", "_input_Skim.root"), fname.replace("_input.root", "_Skim.root"))\n')
-     fPy.write('    except:\n')
-     fPy.write('        pass\n')
+     #fPy.write('for fname in files:\n')
+     #fPy.write('    try:\n')
+     #fPy.write('        os.unlink(fname)\n')
+     ##fPy.write('        os.rename(fname.replace("_input.root", "_input_Skim.root"), fname.replace("_input.root", "_Skim.root"))\n')
+     #fPy.write('    except:\n')
+     #fPy.write('        pass\n')
 
      # Close file
      fPy.close()
@@ -659,27 +689,39 @@ class PostProcMaker():
 #------------- MODULE CUSTOMIZATION: baseW, CMSSW_Version, ....
 
    def computewBaseW(self,iSample,DEBUG=False):
+     DEBUG = True
      if   '_ext' in iSample : iSampleXS = iSample.split('_ext')[0]
      elif '-ext' in iSample : iSampleXS = iSample.split('-ext')[0]
      elif '_newpmx' in iSample : iSampleXS = iSample.split('_newpmx')[0]
      else:                    iSampleXS = iSample
      if not iSample in self._baseW:
+       print 'basew1a'
        Xsec  = self._xsDB.get(iSampleXS)
+       print 'basew1b'
+       
        if float(Xsec) == 0.: 
+           print 'basew2a'
            nEvt = 0
            baseW = 1
        else:    
            useLocal = False
 
+           print 'basew2b'
            FileList = self.getFiles(iSample)
+           print 'basew2b2'
+           print FileList
 
            # Always check #nAOD files !
            if self._iniStep == 'Prod':
              if 'srmPrefix' in self._Samples[iSample]:
                useLocal = True
            else:
+             print 'basew2c'
              useLocal = True
              nAODFileList = self.getFilesFromSource(iSample)
+           
+             print 'basew2d'
+             print nAODFileList
 
              # Fallback to nAOD in case of missing files (!!! will always fall back in case of hadd !!!)
              if not len(nAODFileList) == len(FileList):
@@ -700,7 +742,8 @@ class PostProcMaker():
                f = ROOT.TFile.Open(iFile, "READ")
              else:
                print self._aaaXrootd+iFile
-               f = ROOT.TFile.Open(self._aaaXrootd+iFile, "READ")
+               f = ROOT.TFile.Open(iFile, "READ")
+               #f = ROOT.TFile.Open(self._aaaXrootd+iFile, "READ")
                #f = ROOT.TFile.Open(self._aaaXrootd+iFile) 
              Runs = f.Get("Runs")
              for iRun in Runs :
@@ -726,10 +769,13 @@ class PostProcMaker():
      # baseW
      if iStep == 'baseW' :
        print "Computing baseW for",iSample
+       print 'A'
        self.computewBaseW(iSample)
        print self._baseW[iSample]['baseW']
+       print 'B'
        module = module.replace('RPLME_baseW'    , str(self._baseW[iSample]['baseW']))
        module = module.replace('RPLME_XSection' , str(self._baseW[iSample]['Xsec']))
+       print 'C'
 
      # "CMSSW" version
      if 'RPLME_CMSSW' in module :
@@ -892,8 +938,8 @@ class PostProcMaker():
 
    def mkHadd(self,iProd,iStep):
 
-     bpostFix=''
-     if not self._iniStep == 'Prod' : bpostFix='____'+self._iniStep
+     bpostFixv=''
+     #if not self._iniStep == 'Prod' : bpostFix='____'+self._iniStep
 
      # Make job directories
      jDir = jobDir+'/NanoGardening__'+iProd

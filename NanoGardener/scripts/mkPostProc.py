@@ -107,7 +107,8 @@ if __name__ == '__main__':
       #    ROOT.gSystem.Load(fn)
       pathRootMacro = CMSSW + '/src/LatinoAnalysis/Gardener/python/variables/'
       for fn in os.listdir(pathRootMacro):
-        if os.path.isfile(pathRootMacro+fn) and ( fn.endswith('.C') or fn.endswith('.cc') ):
+        #if os.path.isfile(pathRootMacro+fn) and ( fn.endswith('.C') or fn.endswith('.cc') ):
+        if os.path.isfile(pathRootMacro+fn) and ( fn.endswith('.C') or fn.endswith('.cc') ) and ('mela' not in fn):
           try:
             ROOT.gROOT.LoadMacro(pathRootMacro+fn+'+g')
           except RuntimeError:

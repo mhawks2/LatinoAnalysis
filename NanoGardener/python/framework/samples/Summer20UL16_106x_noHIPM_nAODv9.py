@@ -638,3 +638,7 @@ Samples['WWToLNuLNu_MWW-0To500'] = {'dasInst' : 'prod/phys03', 'nanoAOD' : '/WWT
 Samples['WWToLNuLNu_MWW-500To750'] = {'dasInst' : 'prod/phys03', 'nanoAOD' : '/WWToLNuLNu_MWW-500to750_TuneCP5_SMEFT_13TeV-madgraph-pythia8/phys_smp-NanoAODv9_UL2016_v2-00000000000000000000000000000000/USER'}
 Samples['WWToLNuLNu_MWW-750To1000'] = {'dasInst' : 'prod/phys03', 'nanoAOD' : '/WWToLNuLNu_MWW-750To1000_TuneCP5_SMEFT_13TeV-madgraph-pythia8/phys_smp-NanoAODv9_UL2016_v2-00000000000000000000000000000000/USER'}
 Samples['WWToLNuLNu_MWW-1000ToInf'] = {'dasInst' : 'prod/phys03', 'nanoAOD' : '/WWToLNuLNu_MWW-1000ToInf_TuneCP5_SMEFT_13TeV-madgraph-pythia8/phys_smp-NanoAODv9_UL2016_v2-00000000000000000000000000000000/USER'}
+
+Samples['TWZToLL_thad_Wlep-DR1'] =  {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/TWZ_samples/TWZToLL_thad_Wlep-DR1/']}
+Samples['TWZToLL_tlep_Whad-DR1'] =  {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/TWZ_samples/TWZToLL_tlep_Whad-DR1/']}
+Samples['TWZToLL_tlep_Wlep-DR1'] =  {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/TWZ_samples/TWZToLL_tlep_Wlep-DR1/']}

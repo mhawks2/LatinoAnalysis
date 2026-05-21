@@ -670,9 +670,55 @@ Samples['AToZHToLLTTbar_MA-950_MH-700'] = {'nanoAOD' : '/AToZHToLLTTbar_MA-950_M
 Samples['AToZHToLLTTbar_MA-950_MH-750'] = {'nanoAOD' : '/AToZHToLLTTbar_MA-950_MH-750_TuneCP5_13TeV-amcatnlo-pythia8/RunIISummer20UL17NanoAODv9-106X_mc2017_realistic_v9-v1/NANOAODSIM'}
 Samples['AToZHToLLTTbar_MA-950_MH-800'] = {'nanoAOD' : '/AToZHToLLTTbar_MA-950_MH-800_TuneCP5_13TeV-amcatnlo-pythia8/RunIISummer20UL17NanoAODv9-106X_mc2017_realistic_v9-v1/NANOAODSIM'}
 Samples['AToZHToLLTTbar_MA-950_MH-850'] = {'nanoAOD' : '/AToZHToLLTTbar_MA-950_MH-850_TuneCP5_13TeV-amcatnlo-pythia8/RunIISummer20UL17NanoAODv9-106X_mc2017_realistic_v9-v1/NANOAODSIM'}
+
+#Samples['AZH_1000_400_tb2'] = {'dasInst' : 'prod/phys03', 'nanoAOD' : '/AZHToLLtt_MA-1000_MH-400_widthA-tanb2_TuneCP5_13TeV-amcatnlo-pythia8/mihawksw-RunIISummer20UL17-106X_mc2017_realistic_v9-NANOAODv9-00000000000000000000000000000000/USER'}
+Samples['AZH_1300_600_tb2'] = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_1300_600_tb2/']}
+Samples['AZH_1300_400_tb2'] = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_1300_400_tb2/']}
+Samples['AZH_1200_400_tb2'] = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_1200_400_tb2/']}
+Samples['AZH_1200_330_tb2'] = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_1200_330_tb2/']}
+Samples['AZH_1100_700_tb2'] = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_1100_700_tb2/']}
+Samples['AZH_1100_500_tb2'] = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_1100_500_tb2/']}
+Samples['AZH_1000_600_tb2'] = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_1000_600_tb2/']}
+Samples['AZH_1000_400_tb2'] = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_1000_400_tb2/']}
+Samples['AZH_900_700_tb2']  = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_900_700_tb2/']}
+Samples['AZH_850_500_tb2']  = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_850_500_tb2/']}
+Samples['AZH_800_400_tb2']  = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_800_400_tb2/']}
+Samples['AZH_750_600_tb2']  = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_750_600_tb2/']}
+Samples['AZH_750_330_tb2']  = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_750_330_tb2/']}
+Samples['AZH_600_500_tb2']  = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_600_500_tb2/']}
+Samples['AZH_450_330_tb2']  = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_450_330_tb2/']}
+
+Samples['AZH_1300_600_tb1'] = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_1300_600_tb1/']}
+Samples['AZH_1300_400_tb1'] = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_1300_400_tb1/']}
+Samples['AZH_1200_400_tb1'] = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_1200_400_tb1/']}
+Samples['AZH_1200_330_tb1'] = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_1200_330_tb1/']}
+Samples['AZH_1100_700_tb1'] = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_1100_700_tb1/']}
+Samples['AZH_1100_500_tb1'] = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_1100_500_tb1/']}
+Samples['AZH_1000_600_tb1'] = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_1000_600_tb1/']}
+Samples['AZH_1000_400_tb1'] = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_1000_400_tb1/']}
+Samples['AZH_900_700_tb1']  = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_900_700_tb1/']}
+Samples['AZH_900_500_tb1']  = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_900_500_tb1/']}
+Samples['AZH_850_500_tb1']  = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_850_500_tb1/']}
+Samples['AZH_800_400_tb1']  = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_800_400_tb1/']}
+Samples['AZH_750_600_tb1']  = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_750_600_tb1/']}
+Samples['AZH_750_330_tb1']  = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_750_330_tb1/']}
+Samples['AZH_650_450_tb1']  = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_650_450_tb1/']}
+Samples['AZH_450_330_tb1']  = {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/AZH_samples/AZH_450_330_tb1/']}
+
+
 ## WW aTGCs ---------------------------------------------------------------------------##
 Samples['WWToLNuLNu_MWW-0To500'] = {'dasInst' : 'prod/phys03', 'nanoAOD' : '/WWToLNuLNu_MWW-0To500_TuneCP5_SMEFT_13TeV-madgraph-pythia8/phys_smp-NanoAODv9_UL2017_v2-00000000000000000000000000000000/USER' } 
 Samples['WWToLNuLNu_MWW-500To750'] = {'dasInst' : 'prod/phys03', 'nanoAOD' : '/WWToLNuLNu_MWW-500to750_TuneCP5_SMEFT_13TeV-madgraph-pythia8/phys_smp-NanoAODv9_UL2017_v2-00000000000000000000000000000000/USER'}
 Samples['WWToLNuLNu_MWW-750To1000'] = {'dasInst' : 'prod/phys03', 'nanoAOD' : '/WWToLNuLNu_MWW-750To1000_TuneCP5_SMEFT_13TeV-madgraph-pythia8/phys_smp-NanoAODv9_UL2017_v2-00000000000000000000000000000000/USER'}
 Samples['WWToLNuLNu_MWW-1000ToInf'] = {'dasInst' : 'prod/phys03', 'nanoAOD' : '/WWToLNuLNu_MWW-1000ToInf_TuneCP5_SMEFT_13TeV-madgraph-pythia8/phys_smp-NanoAODv9_UL2017_v2-00000000000000000000000000000000/USER' } 
 
+
+#Samples['TWZToLL_thad_Wlep-DR1'] =  {'srmPrefix': 'davs://eos.cms.rcac.purdue.edu:9000', "paths": ['store/mc/RunIISummer20UL17NanoAODv9/TWZToLL_thad_Wlep-DR1_TuneCP5_13TeV_amcatnlo-pythia8/NANOAODSIM/106X_mc2017_realistic_v9-v1/30000/']}
+#Samples['TWZToLL_thad_Wlep-DR1'] = {'nanoAOD' : '/TWZToLL_thad_Wlep-DR1_TuneCP5_13TeV_amcatnlo-pythia8/RunIISummer20UL17NanoAODv9-106X_mc2017_realistic_v9-v1/NANOAODSIM' } 
+#Samples['TWZToLL_tlep_Whad-DR1'] = {'nanoAOD' : '/TWZToLL_tlep_Whad-DR1_TuneCP5_13TeV_amcatnlo-pythia8/RunIISummer20UL17NanoAODv9-106X_mc2017_realistic_v9-v1/NANOAODSIM' }
+#Samples['TWZToLL_tlep_Wlep-DR1'] = {'nanoAOD' : '/TWZToLL_tlep_Wlep-DR1_TuneCP5_13TeV_amcatnlo-pythia8/RunIISummer20UL17NanoAODv9-106X_mc2017_realistic_v9-v1/NANOAODSIM' }
+
+Samples['TWZToLL_thad_Wlep-DR1'] =  {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/TWZ_samples/TWZToLL_thad_Wlep-DR1/']}
+#Samples['TWZToLL_thad_Wlep-DR1'] =  {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/workspace/TWZToLL_thad_Wlep-DR1/']}
+Samples['TWZToLL_tlep_Whad-DR1'] =  {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/TWZ_samples/TWZToLL_tlep_Whad-DR1/']}
+Samples['TWZToLL_tlep_Wlep-DR1'] =  {'srmPrefix': 'root://eosuser.cern.ch', 'paths' : ['/eos/user/m/mihawksw/azh/postprocessing/TWZ_samples/TWZToLL_tlep_Wlep-DR1/']}
