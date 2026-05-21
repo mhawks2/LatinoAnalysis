@@ -163,14 +163,9 @@ class batchJobs :
               jFileSing.write('cd $TMPDIR \n')
          elif 'cern' in hostName:
            if not CERN_USE_LSF:
-             jFile.write('mkdir -p /eos/user/m/mihawksw/azh/postprocessing/workspace'+subDirExtra+' \n')
-             #jFile.write('cd /eos/user/m/mihawksw/azh/postprocessing/workspace'+subDirExtra+' \n')
-             #jFile.write('cd /eos/user/m/mihawksw/azh/postprocessing/workspace/ \n')
-             #jFile.write('cd $TMPDIR \n')
-             #jFile.write('set -e \n')
-           
+             #jFile.write('mkdir -p /eos/user/m/mihawksw/azh/postprocessing/workspace'+subDirExtra+' \n')
              jFile.write('cd $TMPDIR \n')
-             #jFile.write('cd /tmp/mihawksw/ \n')
+             #jFile.write('set -e \n')
            else:
              jFile.write("mkdir /tmp/$USER/$LSB_JOBID \n")
              jFile.write("cd /tmp/$USER/$LSB_JOBID \n")

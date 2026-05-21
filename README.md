@@ -1,13 +1,46 @@
-The latinos framework is roughly divided in three parts.
+# Before Starting
 
-# 0. Install
+If you are here, you probably want to use the `Latinos` framework to analyze ultra-legacy  Run 2 data. Please consider that this version of the framework is obsolete, and we suggest to use instead [mkShapesRDF](https://github.com/latinos/mkShapesRDF/tree/master).
+
+In case you really need to use this version of the framework, be aware that it is based on a `CMSSW` version not running on `el9`. To use the framework on lxplus, follow the instructions [here](https://gitlab.cern.ch/cms-cat/cmssw-lxplus). In particular, the framework can run only inside a singularity, and you need to create a script called `start_el7.sh`, containing:
+
+    #!/bin/bash
+    export APPTAINER_BINDPATH=/afs,/cvmfs,/cvmfs/grid.cern.ch/etc/grid-security:/etc/grid-security,/cvmfs/grid.cern.ch/etc/grid-security/vomses:/etc/vomses,/eos,/etc/pki/ca-trust,/etc/tnsnames.ora,/run/user,/tmp,/var/run/user,/etc/sysconfig,/etc:/orig/etc
+schedd=`myschedd show -j | jq .currentschedd | tr -d '"'`
+
+    apptainer -s exec /cvmfs/unpacked.cern.ch/gitlab-registry.cern.ch/cms-cat/cmssw-lxplus/cmssw-el7-lxplus:latest/ sh -c "source /app/setupCondor.sh && export _condor_SCHEDD_HOST=$schedd && export _condor_SCHEDD_NAME=$schedd && export _condor_CREDD_HOST=$schedd && /bin/bash  "
+
+
+Then, make the script executable using `chmod +x start_el7.sh`, and run it:
+
+    ./start_el7.sh
+
+
+Good luck!
+
+# Install
 
 Download the framework:
 
-    cmsrel CMSSW_10_6_27
-    cd CMSSW_10_6_27/src/
+    cmsrel CMSSW_10_6_28
+    cd CMSSW_10_6_28/src/
     cmsenv
     git clone --branch 13TeV git@github.com:latinos/setup.git LatinosSetup
+
+Before running setup, edit `scripts/bootstrap.sh` and replace:
+
+    git clone git@github.com:latinos/LatinoAnalysis.git LatinoAnalysis
+    cd LatinoAnalysis
+    git checkout UL_production
+    
+with the url for this repo `mhawks2/LatinoAnalysis` and branch `azhPostProc`:
+
+    git clone git@github.com:mhawks2/LatinoAnalysis.git LatinoAnalysis
+    cd LatinoAnalysis
+    git checkout azhPostProc
+
+then run the setup script:
+
     source LatinosSetup/SetupShapeOnly.sh
     scram b -j 10
 
@@ -17,72 +50,68 @@ Now we are in the `correctionlib/pybind11/` directory. Update correctionlib to `
     cd ../..
     scram b -j 10
 
-Make a copy and edit the following python file (userConfig.py) to specify your base directory, i.e. the directory in which your job related information will be stored:
+Edit the following python files to specify your main directories, i.e. the directories in which your job related information and output will be stored:
 
-    cd LatinoAnalysis/Tools/python/
-    cp userConfig_TEMPLATE.py userConfig.py
-    cd -
+    LatinoAnalysis/Tools/python/userConfig.py #for baseDir, jobDir, workDir
+    NanoGardener/python/framework/Sites_cfg.py #for xrootdPath, treeBaseDir
 
-# 1. Read miniAOD
 
-The code used to read and analyse miniAOD is documented here,
+# Latino trees post-processing
 
-    https://github.com/latinos/LatinoTrees/tree/master/AnalysisStep/test
+### Postprocessing script
+The mkPostProc.py script is provided, that automates the submission of a full postprocessing campaing. The basic idea is that this script creates one python executable similar to the example quoted above (https://github.com/latinos/LatinoAnalysis/blob/master/NanoGardener/test/postproc.py), with automated definition of the input and output files and the list of modules to be run.
 
-We produce simple ROOT trees from the data and MC miniAOD datasets. To limit the size of the trees we require the events to have at least one lepton that passes a very loose ID requirement.
+This script is based on three master configuration files:
 
-# 2. Latino trees post-processing
+   * `Sites_cfg.py` (https://github.com/latinos/LatinoAnalysis/blob/master/NanoGardener/python/framework/Sites_cfg.py) defines the sites on which one is willing to write the output. By default, if the postprocessing is run from one of these sites, the output will go to that site.
+   * `Productions_cfg.py` (https://github.com/latinos/LatinoAnalysis/blob/master/NanoGardener/python/framework/Productions_cfg.py) Defines the path to the list of samples.
+   * `Steps_cfg.py` (https://github.com/latinos/LatinoAnalysis/blob/master/NanoGardener/python/framework/Steps_cfg.py) defines the different steps and the chains of steps to be run.
+   
+Sample names and paths are found in `NanoGardener/python/framework/samples`, e.g. for 2017 the filename is `Summer20UL17_106x_nAODv9.py`
 
-As calibrations, efficiencies, NLO weights, etc, are often coming a bit late, we have a second processing step based on the previous trees, that allows us to modify the 4-vectors of objects (like leptons and jets) and recompute event kinematics, plugin efficiencies, add weights. This same post-processing is used to apply systematics like scale uncertainties (leptons, MET, jets) that require to modify the 4-vectors of objects. Once we have all the outputs of the second step we derive skimmed ROOT trees applying different selections, to reduce the size as deemed for a given analysis. The code used at this level is documented here,
+ Examples:
+ 
+    mkPostProc.py -p Summer20UL17_106ix_nAODv9_Full2017v9 -i MCl1loose2017v9 -s MCCorr2017v9NoJERInHorn -T TWZ_thad_Wlep-DR1 -b -Q nextweek 
+ 
+ this will submit the `MCCorr2017v9NoJERInHorn` chain on the `TWZ_thad_Wlep-DR1` sample defined for the production version `Summer20UL17_106x_nAODv9_Full2017v9`.
+ 
+ Options:
+     
+         -i : step to start from [default is 'Prod' mode] 
+         -s : step to run 
+         -b : submit to batch [default is interactive execution] 
+         -n : dry-run  just produce script in job directory but do not submit  
+         -T <sample1>, ... ,< sampleN > : run only on these samples 
+         -E <sample1>, ... ,< sampleN > : do not run on these samples 
+         -R : redo all jobs even if output file exist 
+         -Q < queuename > : specify queue like 8nh [default btw, see  Site_cfg.py ],   
+         Not needed by default 
+         --sitescfg  <File> : alternative site cfg
+         --modcfg <File> : alternative step/module  cfg
+         --datacfg <File> : alternative production cfg
 
-    https://github.com/latinos/LatinoAnalysis/tree/master/Gardener
 
-# 3. Analysis
+Steps for full postprocessing of nominal samples are `MCl1loose2017v9 -> MCCorr2017v9NoJERInHorn -> l2tightOR2017v9`. The commands to run the chain are shown for a single TWZ sample for 2017:
 
-The following python code is used to produce plots, study backgrounds and produce data cards for computing significance and limits,
+    mkPostProc.py -p Summer20UL17_106ix_nAODv9_Full2017v9 -s MCl1loose2017v9 -T TWZ_thad_Wlep-DR1 -b -Q nextweek 
+    mkPostProc.py -p Summer20UL17_106ix_nAODv9_Full2017v9 -i MCl1loose2017v9 -s MCCorr2017v9NoJERInHorn -T TWZ_thad_Wlep-DR1 -b -Q nextweek 
+    mkPostProc.py -p Summer20UL17_106ix_nAODv9_Full2017v9 -i MCl1loose2017v9__MCCorr2017v9NoJERInHorn -s l2tightOR2017v9 -T TWZ_thad_Wlep-DR1 -b -Q nextweek 
 
-    https://github.com/latinos/PlotsConfigurations
+### Systematics (Up/Down variations)
 
-As a starting point one can try this WW configuration,
+Systematics are run from the last step of the base chain above. Up and Down variations are run separately. For example:
 
-    https://github.com/latinos/PlotsConfigurations/tree/master/Configurations/ControlRegions/WW/Full2016
+    mkPostProc.py -p Summer20UL17_106ix_nAODv9_Full2017v9 -i MCl1loose2017v9__MCCorr2017v9NoJERInHorn__l2tightOR2017v9 -s ElepTup_suffix -T TWZ_thad_Wlep-DR1 -b -Q nextweek 
 
-The first step reads the post-processed latino trees and produces histograms for several variables and phase spaces,
+The list of systematics steps for the Up variations are `ElepTup_suffix, MupTup_suffix, METup_suffix, JERup_suffix`. The Down variation steps are identical but swapping `up_suffix` for `do_suffix`.
 
-    mkShapes.py --pycfg=configuration.py \
-                --inputDir=/eos/cms/store/group/phys_higgs/cmshww/amassiro/Full2016/Feb2017_summer16/MCl2looseCut__hadd__bSFL2pTEffCut__l2tight \
-                --batchSplit=Cuts,Samples \
-                --doBatch=True \
-                --batchQueue=8nh
-                
-    mkBatch.py --status
+### NOTE
 
-Once the previous jobs have finished we hadd the outputs,
+JES systematics for the Run 2 UL postprocessing campaign were run with mkShapesRDF, using the `jes-production` branch [here](https://github.com/latinos/mkShapesRDF/tree/jes-production)
 
-    mkShapes.py --pycfg=configuration.py \
-                --inputDir=/eos/cms/store/group/phys_higgs/cmshww/amassiro/Full2016/Feb2017_summer16/MCl2looseCut__hadd__bSFL2pTEffCut__l2tight \
-                --batchSplit=Cuts,Samples \
-                --doHadd=True
+Installation instructions are found in the link above.
 
-Now we are ready to make data/MC comparison plots,
+Update with AZH-specific instructions for following the Run 2 UL prescription are coming soon! 
 
-    mkPlot.py --inputFile=rootFile/plots_WW.root \
-              --showIntegralLegend=1
-              
-To move or copy the plots to the web,
 
-    mkdir $HOME/www/latino
-    pushd $HOME/www/latino
-    wget https://raw.githubusercontent.com/latinos/PlotsConfigurations/master/index.php
-    popd
-    cp plotWW/*png $HOME/www/latino/.
-    
-Time to check and share the results.
 
-    https://piedra.web.cern.ch/piedra/latino/
-
-# 4. Tutorials
-
-In the twiki below we have documented the tutorials that have been written for different pieces of the latino framework.
-
-    https://twiki.cern.ch/twiki/bin/view/CMS/LatinosFrameworkTutorials

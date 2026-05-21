@@ -295,19 +295,19 @@ class PostProcMaker():
      if 'X509_CERT_DIR' not in os.environ and os.path.isdir('/etc/grid-security/certificates'):
        os.environ['X509_CERT_DIR'] = '/etc/grid-security/certificates'
      
-     print 'basew3a'
+     #print 'basew3a'
      FileList = []
      for path in paths:
        if useGfal2Py:
-         print 'basew3b'
+         #print 'basew3b'
          dircont = self.ctx.listdir(srmprefix + path)
          files = [f for f in dircont if f.endswith('.root')]
-         print 'basew3c'
+         #print 'basew3c'
        else:
-         print 'basew3d'
+         #print 'basew3d'
          command = '(eval `scram unsetenv -sh`; ls '+path+ " | grep root)"
          #command = '(eval `scram unsetenv -sh`; gfal-ls '+srmprefix+path+ " | grep root)"
-         print 'basewe'
+         #print 'basewe'
          proc=subprocess.Popen(command, stderr = subprocess.PIPE,stdout = subprocess.PIPE, shell = True)
          out, err = proc.communicate()
          if not proc.returncode == 0 :
@@ -424,7 +424,6 @@ class PostProcMaker():
            print "c"
            stageOutCmd  = self.mkStageOut(outFile,self._targetDic[iSample][iFile])
 ###########rmGarbageCmd = 'rm '+outFile+' ; rm '+ os.path.basename(iFile).replace('.root','_Skim.root')
-           #rmGarbageCmd = 'rm '+outFile+' ; rm '+ os.path.basename(iFile).replace('.root','_Skim.root')
            rmGarbageCmd = 'rm '+outFile+' ; rm '+ os.path.basename(iFile).replace('.root', '_input____'+iProd+'__'+iStep+'.root')
            # Interactive
            if   self._jobMode == 'Interactive' :
@@ -592,6 +591,9 @@ class PostProcMaker():
      fPy.write('for source in sourceFiles:\n')
      fPy.write('    fname = os.path.basename(source).replace(".root", "_input.root")\n')
      fPy.write('    out, err = subprocess.Popen(["cp", source, "./"+fname], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()\n')
+#####################
+## !!! commented because this kept failing when trying to read locally from eos...
+##
 #####fPy.write('    for att in range(5):\n')
 #####fPy.write('        if source.startswith("root://"):\n')
 #####fPy.write('            proc = subprocess.Popen(["xrdcp", "-f", source, "./" + fname])\n')
@@ -640,7 +642,6 @@ class PostProcMaker():
 
 #####
      fPy.write('p = PostProcessor(  "."   ,          \n')
-#####fPy.write('p = PostProcessor(  "/eos/user/m/mihawksw/azh/postprocessing/workspace/TWZToLL_thad_Wlep-DR1/"   ,          \n')
      fPy.write('                    files ,          \n')
      fPy.write('                    postfix="____'+iProd+'__'+iStep+'",       \n')
      if jsonFile != None:
@@ -695,20 +696,20 @@ class PostProcMaker():
      elif '_newpmx' in iSample : iSampleXS = iSample.split('_newpmx')[0]
      else:                    iSampleXS = iSample
      if not iSample in self._baseW:
-       print 'basew1a'
+       #print 'basew1a'
        Xsec  = self._xsDB.get(iSampleXS)
-       print 'basew1b'
+       #print 'basew1b'
        
        if float(Xsec) == 0.: 
-           print 'basew2a'
+           #print 'basew2a'
            nEvt = 0
            baseW = 1
        else:    
            useLocal = False
 
-           print 'basew2b'
+           #print 'basew2b'
            FileList = self.getFiles(iSample)
-           print 'basew2b2'
+           #print 'basew2b2'
            print FileList
 
            # Always check #nAOD files !
@@ -716,11 +717,11 @@ class PostProcMaker():
              if 'srmPrefix' in self._Samples[iSample]:
                useLocal = True
            else:
-             print 'basew2c'
+             #print 'basew2c'
              useLocal = True
              nAODFileList = self.getFilesFromSource(iSample)
            
-             print 'basew2d'
+             #print 'basew2d'
              print nAODFileList
 
              # Fallback to nAOD in case of missing files (!!! will always fall back in case of hadd !!!)
@@ -769,13 +770,13 @@ class PostProcMaker():
      # baseW
      if iStep == 'baseW' :
        print "Computing baseW for",iSample
-       print 'A'
+       #print 'A'
        self.computewBaseW(iSample)
        print self._baseW[iSample]['baseW']
-       print 'B'
+       #print 'B'
        module = module.replace('RPLME_baseW'    , str(self._baseW[iSample]['baseW']))
        module = module.replace('RPLME_XSection' , str(self._baseW[iSample]['Xsec']))
-       print 'C'
+       #print 'C'
 
      # "CMSSW" version
      if 'RPLME_CMSSW' in module :
