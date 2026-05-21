@@ -25,15 +25,8 @@ Download the framework:
     cmsrel CMSSW_10_6_28
     cd CMSSW_10_6_28/src/
     cmsenv
-    git clone --branch 13TeV git@github.com:latinos/setup.git LatinosSetup
 
-Before running setup, edit `scripts/bootstrap.sh` and replace:
-
-    git clone git@github.com:latinos/LatinoAnalysis.git LatinoAnalysis
-    cd LatinoAnalysis
-    git checkout UL_production
-    
-with the url for this repo `mhawks2/LatinoAnalysis` and branch `azhPostProc`:
+Clone this repo with branch `azhPostProc`:
 
     git clone git@github.com:mhawks2/LatinoAnalysis.git LatinoAnalysis
     cd LatinoAnalysis
@@ -41,19 +34,15 @@ with the url for this repo `mhawks2/LatinoAnalysis` and branch `azhPostProc`:
 
 then run the setup script:
 
-    source LatinosSetup/SetupShapeOnly.sh
+    source setup.sh
     scram b -j 10
 
-Now we are in the `correctionlib/pybind11/` directory. Update correctionlib to `v2.9.2`:
-
-    git checkout v2.9.2
-    cd ../..
-    scram b -j 10
-
-Edit the following python files to specify your main directories, i.e. the directories in which your job related information and output will be stored:
+Before starting the postprocessing, edit the following python files to specify your main directories, i.e. the directories in which your job related information and output will be stored:
 
     LatinoAnalysis/Tools/python/userConfig.py #for baseDir, jobDir, workDir
     NanoGardener/python/framework/Sites_cfg.py #for xrootdPath, treeBaseDir
+
+
 
 
 # Latino trees post-processing
@@ -90,6 +79,7 @@ Sample names and paths are found in `NanoGardener/python/framework/samples`, e.g
          --modcfg <File> : alternative step/module  cfg
          --datacfg <File> : alternative production cfg
 
+### Nominal samples
 
 Steps for full postprocessing of nominal samples are `MCl1loose2017v9 -> MCCorr2017v9NoJERInHorn -> l2tightOR2017v9`. The commands to run the chain are shown for a single TWZ sample for 2017:
 
